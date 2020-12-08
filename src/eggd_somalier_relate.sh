@@ -8,11 +8,6 @@ main() {
 
     echo "Value of input_file: '${input_file[@]}'"
 
-    # The following line(s) use the dx command-line tool to download your file
-    # inputs to the local file system using variable names for the filenames. To
-    # recover the original filenames, you can use the output of "dx describe
-    # "$variable" --name".
-
     # install python packages from included wheels
     # pip install --upgrade pip
     pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
@@ -29,6 +24,8 @@ main() {
     echo "--------------Change permissions-----------------"
     sudo chmod 777 /usr/bin/somalier
 
+
+    
     # Now run static binary in resources/usr/bin
     echo "--------------Run Somalier extract-----------------"
     mkdir -p /home/dnanexus/out/html/
@@ -41,6 +38,14 @@ main() {
     pwd
 
     somalier relate --ped /home/dnanexus/*.ped /home/dnanexus/*.somalier
+
+    service docker start
+
+    # Load tabix
+    docker load -i somalier_v0_2_12.tar.gz
+
+    docker run -v /home/dnanexus:/data brentp/somalier:v0.2.12 somalier relate --ped data/*.ped /data/*.somalier
+
     
     ls -a
 
@@ -56,13 +61,4 @@ main() {
     ls -a /home/dnanexus/out/
 
     dx-upload-all-outputs
-
-    # out_file=$(dx upload home/dnanexus/out/* --brief)
-
-    # The following line(s) use the utility dx-jobutil-add-output to format and
-    # add output variables to your job's output as appropriate for the output
-    # class.  Run "dx-jobutil-add-output -h" for more information on what it
-    # does.
-
-    # dx-jobutil-add-output out_file "$out_file" --class=file
 }
