@@ -8,6 +8,11 @@ main() {
 
     echo "Value of input_file: '${input_file[@]}'"
 
+    # The following line(s) use the dx command-line tool to download your file
+    # inputs to the local file system using variable names for the filenames. To
+    # recover the original filenames, you can use the output of "dx describe
+    # "$variable" --name".
+
     # install python packages from included wheels
     # pip install --upgrade pip
     pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
@@ -24,8 +29,6 @@ main() {
     echo "--------------Change permissions-----------------"
     sudo chmod 777 /usr/bin/somalier
 
-
-    
     # Now run static binary in resources/usr/bin
     echo "--------------Run Somalier extract-----------------"
     mkdir -p /home/dnanexus/out/html/
@@ -33,26 +36,19 @@ main() {
     mkdir -p /home/dnanexus/out/samples_tsv/
     mkdir -p /home/dnanexus/out/groups_tsv/
 
-    cd /home/dnanexus/out/
     ls -a
     pwd
 
     somalier relate --ped /home/dnanexus/*.ped /home/dnanexus/*.somalier
-
-    service docker start
-
-    # Load tabix
-    docker load -i somalier_v0_2_12.tar.gz
-
-    docker run -v /home/dnanexus:/data brentp/somalier:v0.2.12 somalier relate --ped data/*.ped /data/*.somalier
-
     
+    python3 het_ratio.py
+
     ls -a
 
-    mv /home/dnanexus/out/somalier.html /home/dnanexus/out/html/
-    mv /home/dnanexus/out/somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
-    mv /home/dnanexus/out/somalier.samples.tsv /home/dnanexus/out/samples_tsv/
-    mv /home/dnanexus/out/somalier.groups.tsv /home/dnanexus/out/groups_tsv/
+    mv somalier.html /home/dnanexus/out/html/
+    mv somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
+    mv somalier.samples.tsv /home/dnanexus/out/samples_tsv/
+    mv somalier.groups.tsv /home/dnanexus/out/groups_tsv/
 
     ls -a /home/dnanexus/out/html
     ls -a /home/dnanexus/out/pairs_tsv
@@ -61,4 +57,13 @@ main() {
     ls -a /home/dnanexus/out/
 
     dx-upload-all-outputs
+
+    # out_file=$(dx upload home/dnanexus/out/* --brief)
+
+    # The following line(s) use the utility dx-jobutil-add-output to format and
+    # add output variables to your job's output as appropriate for the output
+    # class.  Run "dx-jobutil-add-output -h" for more information on what it
+    # does.
+
+    # dx-jobutil-add-output out_file "$out_file" --class=file
 }
