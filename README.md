@@ -5,7 +5,7 @@ This app runs Somalier (v0.2.12) to predict relatness and sex of samples.
 
 This app is based on https://github.com/brentp/somalier
 
-![Image of workflow](https://github.com/eastgenomics/eggd_somalier_extract/blob/dev/somalier_relate_workflow.png)
+![Image of workflow](https://github.com/eastgenomics/eggd_somalier_relate/blob/dev/somalier_relate_workflow.png)
 
 ## What are the inputs?
 Inputs are the somalier files. These can be inputed as an array.
