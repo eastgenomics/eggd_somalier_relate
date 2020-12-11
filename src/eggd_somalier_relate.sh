@@ -25,25 +25,26 @@ main() {
 
     python3 make_ped.py -a *.somalier
 
-    # Give permission rights
-    echo "--------------Change permissions-----------------"
-    sudo chmod 777 /usr/bin/somalier
-
     # Now run static binary in resources/usr/bin
-    echo "--------------Run Somalier extract-----------------"
-    mkdir -p /home/dnanexus/out/html/
-    mkdir -p /home/dnanexus/out/pairs_tsv/
-    mkdir -p /home/dnanexus/out/samples_tsv/
-    mkdir -p /home/dnanexus/out/groups_tsv/
+    echo "--------------Run Somalier docker -----------------"
 
     ls -a
     pwd
 
-    somalier relate --ped /home/dnanexus/*.ped /home/dnanexus/*.somalier
-    
+    service docker start
+
+    docker load -i somalier_v0_2_12.tar.gz
+
+    docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
+
     python3 het_ratio.py
 
     ls -a
+
+    mkdir -p /home/dnanexus/out/html/
+    mkdir -p /home/dnanexus/out/pairs_tsv/
+    mkdir -p /home/dnanexus/out/samples_tsv/
+    mkdir -p /home/dnanexus/out/groups_tsv/
 
     mv somalier.html /home/dnanexus/out/html/
     mv somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
@@ -58,12 +59,4 @@ main() {
 
     dx-upload-all-outputs
 
-    # out_file=$(dx upload home/dnanexus/out/* --brief)
-
-    # The following line(s) use the utility dx-jobutil-add-output to format and
-    # add output variables to your job's output as appropriate for the output
-    # class.  Run "dx-jobutil-add-output -h" for more information on what it
-    # does.
-
-    # dx-jobutil-add-output out_file "$out_file" --class=file
 }
