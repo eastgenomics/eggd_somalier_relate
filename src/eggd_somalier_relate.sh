@@ -37,7 +37,8 @@ main() {
 
     docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
 
-    python3 het_ratio.py
+    # Add threshold to file
+    python3 het.py
 
     ls -a
 
