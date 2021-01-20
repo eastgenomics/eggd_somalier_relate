@@ -8,6 +8,9 @@ main() {
 
     echo "Value of input_file: '${input_file[@]}'"
 
+    echo "Value of female: '${f}'"
+
+    echo "Value of male: '${m}'"
     # The following line(s) use the dx command-line tool to download your file
     # inputs to the local file system using variable names for the filenames. To
     # recover the original filenames, you can use the output of "dx describe
@@ -36,10 +39,25 @@ main() {
     docker load -i somalier_v0_2_12.tar.gz
 
     docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
-
+  
+    echo "-------------- Predicting Sex based on threshold -----------------"
     # Add threshold to file
-    python3 het.py
+    # if statement -z assumes the parameter is null
+    if [[ ! -z ${f} ]] && [[ ! -z ${m} ]]; then
+        echo "Inputted thresholds will be used: Female =<" "${f} and" "male =>" "${m}"
+        python3 het.py -F ${f} -M ${m}
+    elif [[ ! -z ${f} ]] && [[ -z ${m} ]]; then
+        echo "Female threshold set to" "${f}." "Default threshold for male =< 1 het calls will be used."
+        python3 het.py -F ${f} -M 1
+    elif [[  -z ${f} ]] && [[ ! -z ${m} ]]; then
+        echo "Male threshold set to" "${m}." "Default threshold for female => 45 het calls will be used."
+        python3 het.py -F 45 -M ${m}
+    else
+        echo "No inputs provided. Default het call thresholds of female => 45 and male =< 1 are used."
+        python3 het.py -F 45 -M 1
+    fi
 
+    echo "--------------Outputting files -----------------"
     ls -a
 
     mkdir -p /home/dnanexus/out/html/

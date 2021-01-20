@@ -12,7 +12,21 @@
       "patterns": [
         "*.somalier"
       ],
-      "help": ""
+      "help": "An array of somalier files"
+    },
+    {
+      "name": "f",
+      "label": "Female",
+      "class": "string",
+      "optional": true,
+      "help": "A integer value for het calls threshold for females. Default is 45"
+    },
+    {
+      "name": "m",
+      "label": "Male",
+      "class": "string",
+      "optional": true,
+      "help": "A integer value for het calls threshold for males. Default is 1"
     }
   ],
   "outputSpec": [
