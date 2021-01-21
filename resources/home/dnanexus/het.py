@@ -44,15 +44,12 @@ def Predict_Sex(data, f_cutoff, m_cutoff):
     x_het = list(data.X_het)
 
     for x in x_het:
-        print(x)
         if x >= f_cutoff:
-            PredictedSex.append("F")
-            print('Female')
+            PredictedSex.append("female")
         elif x <= m_cutoff:
-            PredictedSex.append("M")
-            print('Male')
+            PredictedSex.append("male")
         else:
-            PredictedSex.append("U")
+            PredictedSex.append("unknown")
 
     Predicted_Sex = pd.DataFrame({'Predicted_Sex':PredictedSex}) 
     
