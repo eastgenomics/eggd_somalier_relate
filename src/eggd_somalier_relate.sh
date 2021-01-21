@@ -6,34 +6,22 @@ set -exo pipefail
 
 main() {
 
-    echo "Value of input_file: '${input_file[@]}'"
-
-    echo "Value of input_file: '${ReportedSex_file}'"
-
     echo "Value of female: '${f}'"
 
     echo "Value of male: '${m}'"
 
-    echo $mappings_path
+    echo "Value of male: '${file_prefix}'"
 
-    # The following line(s) use the dx command-line tool to download your file
-    # inputs to the local file system using variable names for the filenames. To
-    # recover the original filenames, you can use the output of "dx describe
-    # "$variable" --name".
-
-    # install python packages from included wheels
-    # pip install --upgrade pip
+    # Install packages
     pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
     pip install packages/openpyxl-2.6.4.tar.gz
 
+    # Load data
     dx-download-all-inputs
-
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
-
     ls -a
 
-    dx pwd
-
+    # Create ped file
     echo "--------------Creating ped file-------------------"
     if [[ ! -z ${ReportedSex_file} ]]; then
         echo "Reported sex file provided"
@@ -45,33 +33,41 @@ main() {
     
     
 
-    # Now run static binary in resources/usr/bin
+    # Run relate somalier
     echo "--------------Run Somalier docker -----------------"
 
     ls -a
-    pwd
 
     service docker start
 
     docker load -i somalier_v0_2_12.tar.gz
 
-    docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
-  
+    if [[ ! -z ${file_prefix} ]]; then
+        echo "Prefix " "${file_prefix}" " will be used for output files"
+        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate -o ${file_prefix}.somalier --ped /data/Samples.ped /data/*.somalier"
+    else
+        echo "No prefix provided for output files - default somalier will be used"
+        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
+    fi
+    
+    #docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
+    
+    # Add predicted sex to file
     echo "-------------- Predicting sex based on threshold -----------------"
     # Add threshold to file
     # if statement -z assumes the parameter is null
     if [[ ! -z ${f} ]] && [[ ! -z ${m} ]]; then
         echo "Inputted thresholds will be used: Female =<" "${f} and" "male =>" "${m}"
-        python3 het.py -F ${f} -M ${m}
+        python3 het.py -F ${f} -M ${m} -i ${file_prefix}.somalier.samples.tsv
     elif [[ ! -z ${f} ]] && [[ -z ${m} ]]; then
         echo "Female threshold set to" "${f}." "Default threshold for male =< 1 het calls will be used."
-        python3 het.py -F ${f} -M 1
+        python3 het.py -F ${f} -M 1 -i ${file_prefix}.somalier.samples.tsv
     elif [[  -z ${f} ]] && [[ ! -z ${m} ]]; then
         echo "Male threshold set to" "${m}." "Default threshold for female => 45 het calls will be used."
-        python3 het.py -F 45 -M ${m}
+        python3 het.py -F 45 -M ${m} -i ${file_prefix}.somalier.samples.tsv
     else
         echo "No inputs provided. Default het call thresholds of female => 45 and male =< 1 are used."
-        python3 het.py -F 45 -M 1
+        python3 het.py -F 45 -M 1 -i ${file_prefix}.somalier.samples.tsv
     fi
 
     echo "--------------Outputting files -----------------"
@@ -82,10 +78,10 @@ main() {
     mkdir -p /home/dnanexus/out/samples_tsv/
     mkdir -p /home/dnanexus/out/groups_tsv/
 
-    mv somalier.html /home/dnanexus/out/html/
-    mv somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
-    mv somalier.samples.tsv /home/dnanexus/out/samples_tsv/
-    mv somalier.groups.tsv /home/dnanexus/out/groups_tsv/
+    mv *.somalier.html /home/dnanexus/out/html/
+    mv *.somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
+    mv *.somalier.samples.tsv /home/dnanexus/out/samples_tsv/
+    mv *.somalier.groups.tsv /home/dnanexus/out/groups_tsv/
 
     ls -a /home/dnanexus/out/html
     ls -a /home/dnanexus/out/pairs_tsv

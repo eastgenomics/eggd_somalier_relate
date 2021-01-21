@@ -36,6 +36,12 @@
       "class": "string",
       "optional": true,
       "help": "A integer value for het calls threshold for males. Default is 1"
+    },
+    {
+      "name": "file_prefix",
+      "class": "string",
+      "optional": true,
+      "help": "Prefix for output files, default is somalier. You can add runfolder id here."
     }
   ],
   "outputSpec": [

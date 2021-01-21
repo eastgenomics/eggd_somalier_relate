@@ -7,6 +7,8 @@ def parse_args():
     ## Read in arguments
     parser = argparse.ArgumentParser()
 
+    parser.add_argument('-i', '--input_data', help='default cutoff is >= 45', required=False)
+
     parser.add_argument('-F', '--Female_cutoff', help='default cutoff is >= 45', required=False)
 
     parser.add_argument('-M', '--Male_cutoff', help='default cutoff is <= 1', required=False)
@@ -60,9 +62,9 @@ def Predict_Sex(data, f_cutoff, m_cutoff):
 
 def main():
 
-    data = pd.read_csv('somalier.samples.tsv', sep='\t')
-
     args = parse_args()
+
+    data = pd.read_csv(args.input_data, sep='\t')
     
     f_cutoff, m_cutoff = get_cutoffs(args)
 
