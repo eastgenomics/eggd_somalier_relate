@@ -25,9 +25,17 @@ main() {
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
 
     ls -a
-
-    python3 make_ped.py -a *.somalier
-
+    echo "--------------Creating ped file-------------------"
+    if [[ ! -z ${ReportedSex_file} ]]; then
+        echo "Reported sex file provided"
+        python3 make_ped.py -a *.somalier -s ${ReportedSex_file}
+    else
+        echo "Reported sex file not provided so will assume unknown for all"
+        python3 make_ped.py -a *.somalier
+    fi
+    
+    dx pwd
+    
     # Now run static binary in resources/usr/bin
     echo "--------------Run Somalier docker -----------------"
 
@@ -40,7 +48,7 @@ main() {
 
     docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
   
-    echo "-------------- Predicting Sex based on threshold -----------------"
+    echo "-------------- Predicting sex based on threshold -----------------"
     # Add threshold to file
     # if statement -z assumes the parameter is null
     if [[ ! -z ${f} ]] && [[ ! -z ${m} ]]; then
