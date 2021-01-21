@@ -8,9 +8,14 @@ main() {
 
     echo "Value of input_file: '${input_file[@]}'"
 
+    echo "Value of input_file: '${ReportedSex_file}'"
+
     echo "Value of female: '${f}'"
 
     echo "Value of male: '${m}'"
+
+    echo $mappings_path
+
     # The following line(s) use the dx command-line tool to download your file
     # inputs to the local file system using variable names for the filenames. To
     # recover the original filenames, you can use the output of "dx describe
@@ -19,23 +24,27 @@ main() {
     # install python packages from included wheels
     # pip install --upgrade pip
     pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
+    pip install packages/openpyxl-2.6.4.tar.gz
 
     dx-download-all-inputs
 
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
 
     ls -a
+
+    dx pwd
+
     echo "--------------Creating ped file-------------------"
     if [[ ! -z ${ReportedSex_file} ]]; then
         echo "Reported sex file provided"
-        python3 make_ped.py -a *.somalier -s ${ReportedSex_file}
+        python3 make_ped.py -a *.somalier -s *.xlsx
     else
         echo "Reported sex file not provided so will assume unknown for all"
         python3 make_ped.py -a *.somalier
     fi
     
-    dx pwd
     
+
     # Now run static binary in resources/usr/bin
     echo "--------------Run Somalier docker -----------------"
 
