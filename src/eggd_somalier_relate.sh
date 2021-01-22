@@ -10,8 +10,6 @@ main() {
 
     echo "Value of male: '${m}'"
 
-    echo "Value of male: '${file_prefix}'"
-
     # Install packages
     pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
     pip install packages/openpyxl-2.6.4.tar.gz
@@ -20,6 +18,14 @@ main() {
     dx-download-all-inputs
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
     ls -a
+
+    # If file_prefix.txt is provided, use that to name files
+    dx download "$file_prefix" -o file_prefix
+
+    file_prefix=$(cat file_prefix)
+    echo "'${file_prefix}'"
+    file_prefix=$(echo $file_prefix | sed 's/.$//'| sed 's/.$//' | cut -d "_" -f2- )
+    echo "'${file_prefix}'"
 
     # Create ped file
     echo "--------------Creating ped file-------------------"
@@ -32,7 +38,6 @@ main() {
     fi
     
     
-
     # Run relate somalier
     echo "--------------Run Somalier docker -----------------"
 

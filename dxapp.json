@@ -39,9 +39,12 @@
     },
     {
       "name": "file_prefix",
-      "class": "string",
+      "class": "file",
       "optional": true,
-      "help": "Prefix for output files, default is somalier. You can add runfolder id here."
+      "patterns": [
+        "*.txt"
+      ],
+      "help": "File with current path directory. Removes 000 prefix. Run 'dx pwd > file_prefix.txt on the cmd line"
     }
   ],
   "outputSpec": [
