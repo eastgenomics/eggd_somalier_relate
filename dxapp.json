@@ -15,15 +15,6 @@
       "help": "An array of somalier files"
     },
     {
-      "name": "ReportedSex_file",
-      "class": "file",
-      "optional": true,
-      "patterns": [
-        "*.xlsx"
-      ],
-      "help": "A xlsx file containing LABNO, ExomeNumber and Sex of gemini samples"
-    },
-    {
       "name": "f",
       "label": "Female",
       "class": "string",

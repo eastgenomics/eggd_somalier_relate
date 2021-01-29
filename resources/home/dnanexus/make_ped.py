@@ -1,8 +1,5 @@
 import pandas as pd
 import argparse
-from openpyxl import load_workbook
-
-## To do: Filenaming system !! How to get project filename? dx pwd??
 
 def parse_args():
     """Allow arguments from the command line to be given. Array of somalier files is needed but 
@@ -22,13 +19,6 @@ def parse_args():
         help='an array of somalier files'
         )
 
-    parser.add_argument(
-        '-s', '--reported_sex', 
-        nargs='+', 
-        required=False, 
-        help='csv/tsv/xlsx of known sample sex'
-        )
-
     args = parser.parse_args()
 
     print("Inputs are: " , args.array)
@@ -46,79 +36,22 @@ def get_sampleID(args):
     
     return samplesID
 
-def read_col_LABNO(sheet, max_row):
-    """
-    Reads in LABNO column of the xlsx which is in the first column
-    """
-    LABNO = []
-    for i in range(1, max_row+1):
-        # get particular cell value    
-        cell_obj=sheet.cell(row=i,column=1)
-        # print cell value     
-        LABNO.append(cell_obj.value)
-        
-    return LABNO
+def known_sex(samplesID):
+    """Produce a ped file where sex is extracted from filename 
 
-def read_col_ExomeNumber(sheet, max_row):
-    """
-    Reads in ExomeNumber column of the xlsx which is in the second column
-    """
-    ExomeNumber = []
-    for i in range(1, max_row+1):
-        # get particular cell value    
-        cell_obj=sheet.cell(row=i,column=2)
-        # print cell value     
-        ExomeNumber.append(cell_obj.value)
-        
-    return ExomeNumber
+    Args:
+        samplesID (list): list of sample names before somalier suffix
 
-def read_col_SEX(sheet, max_row):
+    Returns:
+        pd dataframe: ped file dataframe
     """
-    Reads in sex column of the xlsx which is in the third column
-    """
-    SEX = []
-    for i in range(1, max_row+1):
-        # get particular cell value    
-        cell_obj=sheet.cell(row=i,column=3)
-        # print cell value     
-        SEX.append(cell_obj.value)
-        
-    return SEX
+ 
+    # Produce a ped file where all sex is known from filename 
 
-def known_sex(samplesID, args):
-    """
-    Produce a ped file where all sex is known from xlsx file where 
-    sample's sex is listed. 
-    Assumes input is xlsx and list of sample names.
-    """
-    file = args.reported_sex[0]
-    #load xlsx #https://medium.com/aubergine-solutions/working-with-excel-sheets-in-python-using-openpyxl-4f9fd32de87f
-    dfs = load_workbook(filename = file) 
-    sheet=dfs.active #select the xlsx
-    max_row=sheet.max_row # get max row count
-
-    labno = read_col_LABNO(sheet,max_row)
-    exomenumber = read_col_ExomeNumber(sheet,max_row)
-    sex = read_col_SEX(sheet, max_row)
-
-    ReportedSex = []
-    # For every sample is list, if sample exists in exomenumber, 
-    # pull out the index and select their sex at that index. 
-    # If sample not in list, then provide unknown
-    for i in range(0,len(samplesID)):
-        sample = samplesID[i]
-        if sample in exomenumber:
-            index = exomenumber.index(sample)
-            ReportedSex.append(sex[index])
-
-        else:
-            print(sample, " does not exist in Gemini db")
-            #Append unknown to the reportedSex
-            ReportedSex.append("U")
-
-    print("---- Reported Sex -----")
-    print(samplesID)
-    print(ReportedSex)
+    ## Filter from filenames
+    field = samplesID[0].count("_") #count number of fields there are
+    sex_field_index= field - 1 #sex is always second last one in filename
+    ReportedSex = [sample.split("_")[sex_field_index] for sample in samplesID]
 
     ## Ped uses number instead of F/M So replace letter with number. 
     # Sex code ('1' = male, '2' = female, '0' = unknown)
@@ -126,6 +59,9 @@ def known_sex(samplesID, args):
     ReportedSex = [s.replace('F','2') for s in ReportedSex]
     ReportedSex = [s.replace('U','0') for s in ReportedSex]
     print(ReportedSex)
+
+    ##sampleID needs to match what is on the vcf 
+    samplesID = [sample.split("_")[0] for sample in samplesID]
 
     FamilyID = samplesID
     PaternalID = [0] * len(samplesID)
@@ -139,39 +75,19 @@ def known_sex(samplesID, args):
         columns =['FID', 'IID', 'PaternalID', 'MaternalID','Sex', 'Phenotype'])
     print(df)
 
-    df.to_csv('Samples.ped', sep='\t',index=False, header =False)
-
-def unknown_sex(samplesID):
-    """
-    Produce a ped file where all sex is unknown
-    """
-    FamilyID = samplesID
-    PaternalID = [0] * len(samplesID)
-    MaternalID = [0] * len(samplesID)
-    Sex = [0] * len(samplesID) # mark all samples sex as 0 sinc they're unknown 
-    Phenotype = [-9] * len(samplesID)
-
-    print("--------------Making PED FILE-----------")
-    df = pd.DataFrame(
-        list(zip(FamilyID, samplesID,  PaternalID, MaternalID, Sex, Phenotype)), 
-        columns =['FID', 'IID', 'PaternalID', 'MaternalID','Sex', 'Phenotype'])
-    print(df)
-
-    df.to_csv('Samples.ped', sep='\t',index=False, header =False)
+    return df
 
 def main():
     """
     Main function to produce input sample's ped file.
     """
     args = parse_args()
-    samplesID = get_sampleID(args)
 
-    if args.reported_sex == None:
-        print("Reported sex file is not provided - all sample's sex are unknown.")
-        unknown_sex(samplesID)
-    else: 
-        print("Reported sex file is provided.")
-        known_sex(samplesID,args)
+    samplesID = get_sampleID(args)
+    
+    df = known_sex(samplesID)
+
+    df.to_csv('Samples.ped', sep='\t',index=False, header =False)
 
 if __name__ == "__main__":
 
