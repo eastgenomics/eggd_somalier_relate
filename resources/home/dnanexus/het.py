@@ -1,33 +1,32 @@
 import pandas as pd
 import argparse
 
-## Read data in
-
 def parse_args():
     """Parse through arguements
+    
 
     Returns:
-        args: Variable that you can extract relevant 
-        arguements inputs needed 
+        args: Variable that you can extract relevant
+        arguements inputs needed
     """
-    ## Read in arguments
+    # Read in arguments
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '-i', '--input_data', 
-        help='default cutoff is >= 45', 
+        '-i', '--input_data',
+        help='default cutoff is >= 45',
         required=False
         )
 
     parser.add_argument(
-        '-F', '--Female_cutoff', 
-        help='default cutoff is >= 45', 
+        '-F', '--Female_cutoff',
+        help='default cutoff is >= 45',
         required=False
         )
 
     parser.add_argument(
-        '-M', '--Male_cutoff', 
-        help='default cutoff is <= 1', 
+        '-M', '--Male_cutoff',
+        help='default cutoff is <= 1',
         required=False
         )
 
@@ -46,7 +45,7 @@ def get_cutoffs(args):
         f_cuttoff (int): female het calls threshold
         m_cuttoff (int): male het calls threshold
     """
-    #If cutoffs are provided use those else use default cutoffs F = 45 and M = 1
+    # If cutoffs are provided use those else use default cutoffs F = 45 and M = 1
 
     if args.Female_cutoff is None:
         print("Default female cutoff at >= 45 is used")
@@ -54,7 +53,6 @@ def get_cutoffs(args):
     else:
         print("Female cutoff is " + args.Female_cutoff)
         f_cutoff = args.Female_cutoff
-
 
     if args.Male_cutoff is None:
         print("Default Male cutoff at <= 1 is used")
@@ -79,7 +77,8 @@ def Predict_Sex(data, f_cutoff, m_cutoff):
         m_cutoff (int): from -M input provided as arg
 
     Returns:
-        data (pandas data frame): Updates dataframe including predicted sex column
+        data (pandas data frame): Updates dataframe 
+        including predicted sex column
     """
     PredictedSex = []
     x_het = list(data.X_het)
@@ -92,25 +91,25 @@ def Predict_Sex(data, f_cutoff, m_cutoff):
         else:
             PredictedSex.append("unknown")
 
-    Predicted_Sex = pd.DataFrame({'Predicted_Sex':PredictedSex}) 
-    
+    Predicted_Sex = pd.DataFrame({'Predicted_Sex': PredictedSex})
+
     data2 = pd.concat([data, Predicted_Sex], axis=1)
-    
+
     return data2
-    
+
 
 def main():
 
     args = parse_args()
 
     data = pd.read_csv(args.input_data, sep='\t')
-    
+
     f_cutoff, m_cutoff = get_cutoffs(args)
 
     data2 = Predict_Sex(data, f_cutoff, m_cutoff)
 
     # replace over existing file
-    data2.to_csv(args.input_data, sep='\t',index=False, header =True) 
+    data2.to_csv(args.input_data, sep='\t', index=False, header =True)
 
 
 if __name__ == "__main__":
