@@ -78,9 +78,9 @@ def known_sex(samplesID):
     print("--------------Making PED FILE-----------")
     df = pd.DataFrame(
         list(zip(FamilyID, samplesID,  PaternalID,
-        MaternalID, Sex, Phenotype)),
+                MaternalID, Sex, Phenotype)),
         columns = ['FID', 'IID', 'PaternalID',
-        'MaternalID', 'Sex', 'Phenotype'])
+                    'MaternalID', 'Sex', 'Phenotype'])
     print(df)
 
     return df
@@ -96,7 +96,7 @@ def main():
 
     df = known_sex(samplesID)
 
-    df.to_csv('Samples.ped', sep ='\t', index = False, header = False)
+    df.to_csv('Samples.ped', sep="\t", index=False, header=False)
 
 
 if __name__ == "__main__":
