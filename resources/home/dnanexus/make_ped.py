@@ -79,8 +79,8 @@ def known_sex(samplesID):
     df = pd.DataFrame(
         list(zip(FamilyID, samplesID,  PaternalID,
                 MaternalID, Sex, Phenotype)),
-        columns = ['FID', 'IID', 'PaternalID',
-                    'MaternalID', 'Sex', 'Phenotype'])
+        columns=['FID', 'IID', 'PaternalID',
+                'MaternalID', 'Sex', 'Phenotype'])
     print(df)
 
     return df

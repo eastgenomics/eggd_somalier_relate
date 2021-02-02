@@ -111,7 +111,7 @@ def main():
     data2 = Predict_Sex(data, f_cutoff, m_cutoff)
 
     # replace over existing file
-    data2.to_csv(args.input_data, sep="\t", index=False, header =True)
+    data2.to_csv(args.input_data, sep="\t", index=False, header=True)
 
 
 if __name__ == "__main__":
