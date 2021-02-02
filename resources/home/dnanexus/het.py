@@ -1,9 +1,10 @@
 import pandas as pd
 import argparse
 
+
 def parse_args():
     """Parse through arguements
-    
+
 
     Returns:
         args: Variable that you can extract relevant
@@ -45,7 +46,8 @@ def get_cutoffs(args):
         f_cuttoff (int): female het calls threshold
         m_cuttoff (int): male het calls threshold
     """
-    # If cutoffs are provided use those else use default cutoffs F = 45 and M = 1
+    # If cutoffs are provided use those else
+    # use default cutoffs F = 45 and M = 1
 
     if args.Female_cutoff is None:
         print("Default female cutoff at >= 45 is used")
@@ -60,7 +62,7 @@ def get_cutoffs(args):
     else:
         print("Male cutoff is " + args.Male_cutoff)
         m_cutoff = args.Male_cutoff
-    
+
     # Need to convert to int as its str so far
     f_cutoff = int(f_cutoff)
     m_cutoff = int(m_cutoff)
@@ -77,7 +79,7 @@ def Predict_Sex(data, f_cutoff, m_cutoff):
         m_cutoff (int): from -M input provided as arg
 
     Returns:
-        data (pandas data frame): Updates dataframe 
+        data (pandas data frame): Updates dataframe
         including predicted sex column
     """
     PredictedSex = []
@@ -109,7 +111,7 @@ def main():
     data2 = Predict_Sex(data, f_cutoff, m_cutoff)
 
     # replace over existing file
-    data2.to_csv(args.input_data, sep='\t', index=False, header =True)
+    data2.to_csv(args.input_data, sep="\t", index=False, header =True)
 
 
 if __name__ == "__main__":
