@@ -16,9 +16,9 @@ main() {
     # Load data
     dx-download-all-inputs
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
-    ls -a
 
     # If file_prefix.txt is provided, use that to name files
+    # else the $file_prefix will be blank
     if [[ ! -z "$file_prefix" ]]; then
         dx download "$file_prefix" -o file_prefix
         file_prefix=$(cat file_prefix)
@@ -33,9 +33,6 @@ main() {
       
     # Run relate somalier
     echo "--------------Run Somalier docker -----------------"
-
-    ls -a
-
     service docker start
 
     docker load -i somalier_v0_2_12.tar.gz
@@ -68,8 +65,6 @@ main() {
     fi
 
     echo "--------------Outputting files -----------------"
-    ls -a
-
     mkdir -p /home/dnanexus/out/html/
     mkdir -p /home/dnanexus/out/pairs_tsv/
     mkdir -p /home/dnanexus/out/samples_tsv/
@@ -79,12 +74,6 @@ main() {
     mv *somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
     mv *somalier.samples.tsv /home/dnanexus/out/samples_tsv/
     mv *somalier.groups.tsv /home/dnanexus/out/groups_tsv/
-
-    ls -a /home/dnanexus/out/html
-    ls -a /home/dnanexus/out/pairs_tsv
-    ls -a /home/dnanexus/out/samples_tsv
-    ls -a /home/dnanexus/out/groups_tsv
-    ls -a /home/dnanexus/out/
 
     dx-upload-all-outputs
 
