@@ -78,9 +78,9 @@ def known_sex(samplesID):
     print("--------------Making PED FILE-----------")
     df = pd.DataFrame(
         list(zip(FamilyID, samplesID,  PaternalID,
-                MaternalID, Sex, Phenotype)),
+                 MaternalID, Sex, Phenotype)),
         columns=['FID', 'IID', 'PaternalID',
-                'MaternalID', 'Sex', 'Phenotype'])
+                 'MaternalID', 'Sex', 'Phenotype'])
     print(df)
 
     return df
