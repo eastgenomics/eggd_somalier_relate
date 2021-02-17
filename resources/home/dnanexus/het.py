@@ -95,9 +95,11 @@ def Predict_Sex(data, f_cutoff, m_cutoff):
 
     Predicted_Sex = pd.DataFrame({'Predicted_Sex': PredictedSex})
 
-    data2 = pd.concat([data, Predicted_Sex], axis=1)
+    data = pd.concat([data, Predicted_Sex], axis=1)
+    
+    data.sex=PredictedSex
 
-    return data2
+    return data
 
 
 def main():
@@ -108,10 +110,10 @@ def main():
 
     f_cutoff, m_cutoff = get_cutoffs(args)
 
-    data2 = Predict_Sex(data, f_cutoff, m_cutoff)
+    data = Predict_Sex(data, f_cutoff, m_cutoff)
 
     # replace over existing file
-    data2.to_csv(args.input_data, sep="\t", index=False, header=True)
+    data.to_csv(args.input_data, sep="\t", index=False, header=True)
 
 
 if __name__ == "__main__":
