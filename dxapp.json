@@ -29,15 +29,6 @@
       "class": "string",
       "optional": true,
       "help": "A integer value for het calls threshold for males. Default is 1"
-    },
-    {
-      "name": "file_prefix",
-      "class": "file",
-      "optional": true,
-      "patterns": [
-        "*.txt"
-      ],
-      "help": "File with current path directory. Removes 000 prefix. Run 'dx pwd > file_prefix.txt on the cmd line"
     }
   ],
   "outputSpec": [
