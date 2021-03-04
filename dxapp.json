@@ -72,6 +72,14 @@
         "*"
       ],
       "help": ""
+    },
+    {
+      "name": "ped_output",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
     }
   ],
   "runSpec": {

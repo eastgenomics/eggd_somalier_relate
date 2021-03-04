@@ -50,30 +50,32 @@ main() {
     chmod 777 *
     # Add threshold to file
     # if statement -z assumes the parameter is null
-    if [[ ! -z ${f} ]] && [[ ! -z ${m} ]]; then
-        echo "Inputted thresholds will be used: Female =<" "${f} and" "male =>" "${m}"
-        python3 het.py -F ${f} -M ${m} -i *somalier.samples.tsv
-    elif [[ ! -z ${f} ]] && [[ -z ${m} ]]; then
-        echo "Female threshold set to" "${f}." "Default threshold for male =< 1 het calls will be used."
-        python3 het.py -F ${f} -M 1 -i *somalier.samples.tsv
-    elif [[  -z ${f} ]] && [[ ! -z ${m} ]]; then
-        echo "Male threshold set to" "${m}." "Default threshold for female => 45 het calls will be used."
-        python3 het.py -F 45 -M ${m} -i *somalier.samples.tsv
-    else
-        echo "No inputs provided. Default het call thresholds of female => 45 and male =< 1 are used."
-        python3 het.py -F 45 -M 1 -i *somalier.samples.tsv
-    fi
+    # if [[ ! -z ${f} ]] && [[ ! -z ${m} ]]; then
+    #     echo "Inputted thresholds will be used: Female =<" "${f} and" "male =>" "${m}"
+    #     python3 het.py -F ${f} -M ${m} -i *somalier.samples.tsv
+    # elif [[ ! -z ${f} ]] && [[ -z ${m} ]]; then
+    #     echo "Female threshold set to" "${f}." "Default threshold for male =< 1 het calls will be used."
+    #     python3 het.py -F ${f} -M 1 -i *somalier.samples.tsv
+    # elif [[  -z ${f} ]] && [[ ! -z ${m} ]]; then
+    #     echo "Male threshold set to" "${m}." "Default threshold for female => 45 het calls will be used."
+    #     python3 het.py -F 45 -M ${m} -i *somalier.samples.tsv
+    # else
+    #     echo "No inputs provided. Default het call thresholds of female => 45 and male =< 1 are used."
+    #     python3 het.py -F 45 -M 1 -i *somalier.samples.tsv
+    # fi
 
     echo "--------------Outputting files -----------------"
     mkdir -p /home/dnanexus/out/html/
     mkdir -p /home/dnanexus/out/pairs_tsv/
     mkdir -p /home/dnanexus/out/samples_tsv/
     mkdir -p /home/dnanexus/out/groups_tsv/
+    mkdir -p /home/dnanexus/out/ped_output
 
     mv *somalier.html /home/dnanexus/out/html/
     mv *somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
     mv *somalier.samples.tsv /home/dnanexus/out/samples_tsv/
     mv *somalier.groups.tsv /home/dnanexus/out/groups_tsv/
+    mv Samples.ped /home/dnanexus/out/ped_output
 
     dx-upload-all-outputs
 
