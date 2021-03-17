@@ -69,6 +69,7 @@ def known_sex(samplesID):
     # sampleID needs to match what is on the vcf so take sampleID only
     samplesID = [sample.split("_")[0] for sample in samplesID]
 
+    # Prepare each column of the ped file by creating lists
     FamilyID = samplesID
     PaternalID = [0] * len(samplesID)
     MaternalID = [0] * len(samplesID)
@@ -76,6 +77,7 @@ def known_sex(samplesID):
     Phenotype = [-9] * len(samplesID)
 
     print("--------------Making PED FILE-----------")
+    # Combine lists into a dataframe
     df = pd.DataFrame(
         list(zip(FamilyID, samplesID,  PaternalID,
                  MaternalID, Sex, Phenotype)),
