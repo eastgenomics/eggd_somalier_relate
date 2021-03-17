@@ -15,6 +15,16 @@
         "*.somalier"
       ],
       "help": "An array of somalier files"
+    },
+    {
+      "name": "file_prefix",
+      "label": "File prefix",
+      "class": "string",
+      "optional": true,
+      "patterns": [
+        "*.txt"
+      ],
+      "help": "String file with current path directory to be the output files prefix"
     }
   ],
   "outputSpec": [
@@ -73,7 +83,10 @@
   },
   "access": {
     "project": "CONTRIBUTE",
-    "allProjects": "VIEW"
+    "allProjects": "VIEW",
+    "network": [
+      "*"
+    ]
   },
   "regionalOptions": {
     "aws:eu-central-1": {

@@ -12,6 +12,10 @@ main() {
     # Move all files in subdirectories of /in directory to the current project
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
 
+    # clean file_prefix input
+    file_prefix=$(echo $file_prefix | cut -d "_" -f2- )
+    echo "'${file_prefix}'"
+
     # Create ped file 
     echo "--------------Creating ped file-------------------"
     python3 make_ped.py -a *.somalier
@@ -21,8 +25,13 @@ main() {
     service docker start
     docker load -i somalier_v0_2_12.tar.gz
 
-    echo "No prefix provided for output files - default somalier will be used"
-    docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
+    if [[ ! -z ${file_prefix} ]]; then
+        echo "Prefix " "${file_prefix}" " will be used for output files"
+        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate -o ${file_prefix}.somalier --ped /data/Samples.ped /data/*.somalier"
+    else
+        echo "No prefix provided for output files - default somalier will be used"
+        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
+    fi
 
     chmod 777 *
 
