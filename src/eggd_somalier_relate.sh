@@ -4,15 +4,12 @@ set -exo pipefail
 
 main() {
 
-    echo "Value of female: '${f}'"
-
-    echo "Value of male: '${m}'"
-
     # Install packages
     pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
 
     # Load data
     dx-download-all-inputs
+    # Move all files in subdirectories of /in directory to the current project
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
 
     # Create ped file 

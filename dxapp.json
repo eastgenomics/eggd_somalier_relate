@@ -1,34 +1,20 @@
 {
-  "name": "eggd_somalier_relate",
-  "title": "Somalier relate",
-  "summary": "Somalier relate",
+  "name": "eggd_somalier_relate_v1.0.0",
+  "title": "eggd_somalier_relate_v1.0.0",
+  "summary": "CChecks relatedness and sex of sample",
   "dxapi": "1.0.0", 
   "properties": {
     "githubRelease": "v1.0.0"
   },
   "inputSpec": [
     {
-      "name": "input_file",
+      "name": "somalier_extract_file",
       "class": "array:file",
       "optional": false,
       "patterns": [
         "*.somalier"
       ],
       "help": "An array of somalier files"
-    },
-    {
-      "name": "f",
-      "label": "Female",
-      "class": "string",
-      "optional": true,
-      "help": "A integer value for het calls threshold for females. Default is 45"
-    },
-    {
-      "name": "m",
-      "label": "Male",
-      "class": "string",
-      "optional": true,
-      "help": "A integer value for het calls threshold for males. Default is 1"
     }
   ],
   "outputSpec": [
@@ -38,7 +24,7 @@
       "patterns": [
         "*"
       ],
-      "help": ""
+      "help": "HTML showing plots from the results tables,"
     },
     {
       "name": "pairs_tsv",
@@ -46,7 +32,7 @@
       "patterns": [
         "*"
       ],
-      "help": ""
+      "help": "Relatedness between pairs of samples"
     },
     {
       "name": "samples_tsv",
@@ -54,7 +40,7 @@
       "patterns": [
         "*"
       ],
-      "help": ""
+      "help": "QC metrics including depth, het and hom of X chromosome."
     },
     {
       "name": "groups_tsv",
@@ -62,7 +48,7 @@
       "patterns": [
         "*"
       ],
-      "help": ""
+      "help": "Grouping samples together based on relatedness"
     },
     {
       "name": "ped_output",
@@ -70,7 +56,7 @@
       "patterns": [
         "*"
       ],
-      "help": ""
+      "help": "Ped file generated based on reported sex from filename."
     }
   ],
   "runSpec": {
@@ -87,10 +73,7 @@
   },
   "access": {
     "project": "CONTRIBUTE",
-    "allProjects": "VIEW",
-    "network": [
-      "*"
-    ]
+    "allProjects": "VIEW"
   },
   "regionalOptions": {
     "aws:eu-central-1": {
