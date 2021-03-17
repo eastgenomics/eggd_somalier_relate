@@ -8,7 +8,8 @@ This app is based on https://github.com/brentp/somalier
 ![Image of workflow](https://github.com/eastgenomics/eggd_somalier_relate/blob/dev/somalier_relate_workflow.jpg)
 
 ## What are the inputs?
-* Array of {sample}.somalier files. These are the output files from somalier
+* Array of {sample}.somalier files. These are the output files from somalier extract.
+* A string for project folder which will be the output file prefixes, default is somalier prefix (Optional).
 
 ## What are the outputs?
 
