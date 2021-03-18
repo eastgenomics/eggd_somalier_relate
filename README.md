@@ -5,7 +5,7 @@ This app runs Somalier (v0.2.12) to predict sex of samples. This app measures re
 
 This app is based on https://github.com/brentp/somalier
 
-![Image of workflow](https://github.com/eastgenomics/eggd_somalier_relate/blob/dev/somalier_relate_workflow.jpg)
+![Image of workflow](https://github.com/eastgenomics/eggd_somalier_relate/blob/filter_filename/somalier_relate_workflow.jpg)
 
 ## What are the inputs?
 * Array of {sample}.somalier files. These are the output files from somalier extract.
