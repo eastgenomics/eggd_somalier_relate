@@ -1,7 +1,7 @@
 # eggd_somalier_relate
 
 ## What does this app do?
-This app runs Somalier (v0.2.12) to predict sex of samples. This app measures relatedness of samples and contains other QC metrics such as depth, het and hom of X chromosomes which enables us to predict sex os samples.
+This app runs Somalier (v0.2.12) to predict sex of samples. This app measures relatedness of samples and contains other QC metrics such as depth, het and hom of X chromosomes which enables us to predict sex of samples.
 
 This app is based on https://github.com/brentp/somalier
 
