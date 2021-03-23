@@ -1,0 +1,100 @@
+{
+  "name": "eggd_somalier_relate_v1.0.0",
+  "title": "eggd_somalier_relate_v1.0.0",
+  "summary": "CChecks relatedness and sex of sample",
+  "dxapi": "1.0.0", 
+  "properties": {
+    "githubRelease": "v1.0.0"
+  },
+  "inputSpec": [
+    {
+      "name": "somalier_extract_file",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.somalier"
+      ],
+      "help": "An array of somalier files"
+    },
+    {
+      "name": "file_prefix",
+      "label": "File prefix",
+      "class": "string",
+      "optional": true,
+      "patterns": [
+        "*.txt"
+      ],
+      "help": "String file with current path directory to be the output files prefix"
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "html",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "HTML showing plots from the results tables,"
+    },
+    {
+      "name": "pairs_tsv",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "Relatedness between pairs of samples"
+    },
+    {
+      "name": "samples_tsv",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "QC metrics including depth, het and hom of X chromosome."
+    },
+    {
+      "name": "groups_tsv",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "Grouping samples together based on relatedness"
+    },
+    {
+      "name": "ped_output",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "Ped file generated based on reported sex from filename."
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 2
+      }
+    },
+    "interpreter": "bash",
+    "release": "16.04",
+    "distribution": "Ubuntu",
+    "file": "src/eggd_somalier_relate.sh",
+    "version": "1"
+  },
+  "access": {
+    "project": "CONTRIBUTE",
+    "allProjects": "VIEW",
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:eu-central-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_v2_x4"
+        }
+      }
+    }
+  }
+}
