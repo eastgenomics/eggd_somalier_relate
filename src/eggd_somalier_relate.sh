@@ -5,12 +5,17 @@ set -exo pipefail
 main() {
 
     # Install packages
+    pip install packages/numpy-1.18.5-cp35-cp35m-manylinux1_x86_64.whl
+    pip install packages/pytz-2021.1-py2.py3-none-any.whl
     pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
 
     # Load data
     dx-download-all-inputs
     # Move all files in subdirectories of /in directory to the current project
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
+
+    # Download docker image from 001 folder#
+    dx download project-Fkb6Gkj433GVVvj73J7x8KbV:file-G1Gx2p8433Gg8Kf644jqxXJG -o somalier_v0_2_12.tar.gz
 
     # clean file_prefix input
     file_prefix=$(echo $file_prefix | cut -d "_" -f2- )
