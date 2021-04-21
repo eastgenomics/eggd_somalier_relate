@@ -44,14 +44,21 @@ main() {
     mkdir -p /home/dnanexus/out/html/
     mkdir -p /home/dnanexus/out/pairs_tsv/
     mkdir -p /home/dnanexus/out/samples_tsv/
-    mkdir -p /home/dnanexus/out/groups_tsv/
     mkdir -p /home/dnanexus/out/ped_output
 
     mv *somalier.html /home/dnanexus/out/html/
     mv *somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
     mv *somalier.samples.tsv /home/dnanexus/out/samples_tsv/
-    mv *somalier.groups.tsv /home/dnanexus/out/groups_tsv/
     mv Samples.ped /home/dnanexus/out/ped_output
+    
+    # If a single somalier file is inputted, groups.tsv file is not generated
+    if [ -f *somalier.groups.tsv ]; then
+        echo "somalier.groups.tsv exists."
+        mkdir -p /home/dnanexus/out/groups_tsv/
+        mv *somalier.groups.tsv /home/dnanexus/out/groups_tsv/
+    else
+        echo "somalier.groups.tsv does not exist as a single sample was used"
+    fi
 
     dx-upload-all-outputs
 
