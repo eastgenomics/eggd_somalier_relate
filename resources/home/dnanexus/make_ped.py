@@ -1,6 +1,6 @@
 import pandas as pd
 import argparse
-
+import string
 
 def parse_args():
     """Allow arguments from the command line to be given.
@@ -42,7 +42,7 @@ def get_sampleID(args):
     return samplesID
 
 
-def known_sex(samplesID):
+def make_ped(samplesID):
     """Produce a ped file where sex is extracted from filename
 
     Args:
@@ -55,15 +55,53 @@ def known_sex(samplesID):
     # Produce a ped file where all sex is known from filename
 
     # Filter from filenames
-    field = samplesID[0].count("_")  # count number of fields there are
+    field = samplesID[0].count("-")  # count number of fields there are
     sex_field_index = field - 1  # sex is always second last one in filename
-    ReportedSex = [sample.split("_")[sex_field_index] for sample in samplesID]
+    ReportedSex = [sample.split("-")[sex_field_index] for sample in samplesID]
+
+    # Need to include check that that the second last column in filename
+    # only has phenotypic sex: F/M/U/N
+
+    # check that its not the other identifier in there - we can
+    # say value in list greater than one is not a phenotype sex identifier
+
+    for letter in ReportedSex:
+        if len(letter) != 1:
+            raise Exception("Length of phenotypic sex is not one. "
+                            "Length of provided phenotypic sex is {}. "
+                            .format(len(letter)) + 
+                            "Provided sex is: {}".format(letter))
+
+    # fail if reported sex does includes letter other than F/M/N/U
+
+    unexpected_sex_letters = []
+    expected_sex = ['F', 'M', 'U', 'N']
+
+    # string.ascii_uppercase has all the letters in cap in a string so need 
+    # to seperate it. Whilst doing that, remove expected sex phenotypes
+    for letter in string.ascii_uppercase:
+        if letter not in expected_sex:
+            unexpected_sex_letters.append(letter)
+
+    # if any phenotypic sex letters is not as expected, raise an expection
+    check =  any(item in unexpected_sex_letters for item in ReportedSex)
+    if check is True:
+        raise Exception("The filename sex phenotypes (non-duplicates) "
+                        "{} contains unrecognised inputs. Expectations " 
+                        "are: F, M, U, N ".format(list(set(ReportedSex))))    
+    else :
+        print("Correct sex phenotypes provided {}".format(ReportedSex))
 
     # Ped uses number instead of F/M So replace letter with number.
     # Sex code ('1' = male, '2' = female, '0' = unknown)
+    # Normally ped files do not have unknown 'None' but need this for
+    # cases where sample sex is not provided. '3' = None. 
+    # relate2multiqc will reformat original_pedigree_sex to differentiate 
+    # 0 = "unknown" and 3 = "none"
     ReportedSex = [s.replace('M', '1') for s in ReportedSex]
     ReportedSex = [s.replace('F', '2') for s in ReportedSex]
     ReportedSex = [s.replace('U', '0') for s in ReportedSex]
+    ReportedSex = [s.replace('N', '3') for s in ReportedSex]
     print(ReportedSex)
 
     # sampleID needs to match what is on the vcf so take sampleID only
@@ -96,7 +134,7 @@ def main():
 
     samplesID = get_sampleID(args)
 
-    df = known_sex(samplesID)
+    df = make_ped(samplesID)
 
     df.to_csv('Samples.ped', sep="\t", index=False, header=False)
 
