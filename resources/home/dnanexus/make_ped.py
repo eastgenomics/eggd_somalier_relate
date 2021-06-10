@@ -55,9 +55,9 @@ def make_ped(samplesID):
     # Produce a ped file where all sex is known from filename
 
     # Filter from filenames
-    field = samplesID[0].count("-")  # count number of fields there are
+    field = samplesID[0].count("_")  # count number of fields there are
     sex_field_index = field - 1  # sex is always second last one in filename
-    ReportedSex = [sample.split("-")[sex_field_index] for sample in samplesID]
+    ReportedSex = [sample.split("_")[sex_field_index] for sample in samplesID]
 
     # Need to include check that that the second last column in filename
     # only has phenotypic sex: F/M/U/N
@@ -105,7 +105,7 @@ def make_ped(samplesID):
     print(ReportedSex)
 
     # sampleID needs to match what is on the vcf so take sampleID only
-    samplesID = [sample.split("_")[0] for sample in samplesID]
+    samplesID = [sample.split("-")[0] for sample in samplesID]
 
     # Prepare each column of the ped file by creating lists
     FamilyID = samplesID
