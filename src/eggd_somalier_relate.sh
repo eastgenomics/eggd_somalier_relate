@@ -41,32 +41,6 @@ main() {
 
     chmod 777 *
 
-    echo "--------------Update sampleID to match filename input -----------------"
-    files=(`ls *.somalier`)
-
-    for ((i=0; i < ${#files[@]}; i++)); do
-    echo "${files[$i]}"
-    done
-
-
-    for ((i=0; i < ${#files[@]}; i++)); do
-    echo "${files[$i]}" | cut -d "." -f 1 >> family.txt
-    done
-
-    scp family.txt sample.txt 
-
-    sed -i '1i#family_id'  family.txt #Add familyID text after 1i
-    sed -i '1isample_id'  sample.txt 
-
-    # echo -e "#family_id\tsample_id\tpaternal_id\tmaternal_id\tsex\tphenotype" | cat - Samples.ped > Samples2.ped && mv Samples2.ped Samples.ped
-
-    # cut -f 7- somalier.samples.tsv | paste Samples.ped > somalier2.samples.tsv
-
-    cut -f 3- somalier.samples.tsv | paste family.txt sample.txt - > somalier2.samples.tsv
-
-    rm somalier.samples.tsv
-    mv somalier2.samples.tsv somalier.samples.tsv
-
     echo "--------------Outputting files -----------------"
     mkdir -p /home/dnanexus/out/html/
     mkdir -p /home/dnanexus/out/pairs_tsv/
