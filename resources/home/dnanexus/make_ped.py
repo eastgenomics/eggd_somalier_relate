@@ -59,9 +59,7 @@ def make_ped(samplesID):
 
     # Filter from filenames
     for sample in samplesID:
-        field = sample.count("-")  # count number of fields there are
-        sex_field_index = field - 1  # sex of sample is always 2nd last
-        sex_char = sample.split("-")[sex_field_index]
+        sex_char = sample.split('-')[-2]
         # sometimes the sex last field is empty :( 
         # so replace blanks with N for None
         if not sex_char:
