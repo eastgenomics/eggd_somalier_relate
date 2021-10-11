@@ -84,9 +84,7 @@ def make_ped(samplesID):
                 )
             reported_sex[index] = "N"
 
-    # fail if reported sex does includes letter other than F/M/N/U
-
-    print("Finished checkign")
+    print("Finished checking")
     print(reported_sex)
 
     # Ped uses number instead of F/M So replace letter with number.
