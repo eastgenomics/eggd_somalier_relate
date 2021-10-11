@@ -55,7 +55,7 @@ def make_ped(samplesID):
     # Not all file names are same length, some filenames are longer so to
     # keep each field/length different, we need to loop over each sampleID
 
-    ReportedSex = []
+    reported_sex = []
 
     # Filter from filenames
     for sample in samplesID:
@@ -66,7 +66,7 @@ def make_ped(samplesID):
         # so replace blanks with N for None
         if not sex_char:
             sex_char = 'N'
-        ReportedSex.append(sex_char)
+        reported_sex.append(sex_char)
 
     # Need to include check that that the second last column in filename
     # only has phenotypic sex: F/M/U/N
@@ -78,21 +78,20 @@ def make_ped(samplesID):
 
     print("Checking values")
 
-    for letter_index in range(len(ReportedSex)):
-        print(letter_index)
-        letter = ReportedSex[letter_index]
+    for letter_index in range(len(reported_sex)):
+        letter = reported_sex[letter_index]
         if len(letter) != 1:
             print("Length of phenotypic sex is not one. "
                 "Length of provided phenotypic sex is {}. "
                  .format(len(letter)) + 
                 "Provided sex is: {}".format(letter))
-            ReportedSex[letter_index] = "N"
+            reported_sex[letter_index] = "N"
             
 
     # fail if reported sex does includes letter other than F/M/N/U
 
     print("Finished checkign")
-    print(ReportedSex)
+    print(reported_sex)
 
     # Ped uses number instead of F/M So replace letter with number.
     # Sex code ('0' = unknown, '1' = male, '2' = female, '3' = none)
@@ -100,17 +99,17 @@ def make_ped(samplesID):
     # cases where sample sex is not provided. '3' = None. 
     # relate2multiqc will reformat original_pedigree_sex to differentiate 
     # 0 = "unknown" and 3 = "none"
-    ReportedSex = [s.replace('U', '0') for s in ReportedSex]
-    ReportedSex = [s.replace('M', '1') for s in ReportedSex]
-    ReportedSex = [s.replace('F', '2') for s in ReportedSex]
-    ReportedSex = [s.replace('N', '3') for s in ReportedSex]
-    print(ReportedSex)
+    reported_sex = [s.replace('U', '0') for s in reported_sex]
+    reported_sex = [s.replace('M', '1') for s in reported_sex]
+    reported_sex = [s.replace('F', '2') for s in reported_sex]
+    reported_sex = [s.replace('N', '3') for s in reported_sex]
+    print(reported_sex)
 
     # Prepare each column of the ped file by creating lists
     FamilyID = samplesID
     PaternalID = [0] * len(samplesID)
     MaternalID = [0] * len(samplesID)
-    Sex = ReportedSex
+    Sex = reported_sex
     Phenotype = [-9] * len(samplesID)
 
     print("--------------Making PED FILE-----------")
