@@ -76,15 +76,13 @@ def make_ped(samplesID):
 
     print("Checking values")
 
-    for letter_index in range(len(reported_sex)):
-        letter = reported_sex[letter_index]
+    for index, letter in enumerate(reported_sex):
         if len(letter) != 1:
-            print("Length of phenotypic sex is not one. "
-                "Length of provided phenotypic sex is {}. "
-                 .format(len(letter)) + 
-                "Provided sex is: {}".format(letter))
-            reported_sex[letter_index] = "N"
-            
+            print(
+                f"Length of phenotypic sex is not one. Length of provided \
+    phenotypic sex is {len(letter)} Provided sex is: {letter}"
+                )
+            reported_sex[index] = "N"
 
     # fail if reported sex does includes letter other than F/M/N/U
 
