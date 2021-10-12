@@ -78,10 +78,10 @@ def make_ped(samplesID):
 
     for index, letter in enumerate(reported_sex):
         if len(letter) != 1:
-            print(
-                "Length of phenotypic sex is not one. Length of provided"
-                f" phenotypic sex is {len(letter)} Provided sex is: {letter}"
-                )
+            print("Length of phenotypic sex is not one. "
+                "Length of provided phenotypic sex is {}. "
+                 .format(len(letter)) + 
+                "Provided sex is: {}".format(letter))
             reported_sex[index] = "N"
 
     print("Finished checking")
