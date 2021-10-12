@@ -1,7 +1,6 @@
 import pandas as pd
 import argparse
 
-
 def parse_args():
     """Allow arguments from the command line to be given.
     Array of somalier files is needed but
@@ -42,7 +41,7 @@ def get_sampleID(args):
     return samplesID
 
 
-def known_sex(samplesID):
+def make_ped(samplesID):
     """Produce a ped file where sex is extracted from filename
 
     Args:
@@ -53,27 +52,58 @@ def known_sex(samplesID):
     """
 
     # Produce a ped file where all sex is known from filename
+    # Not all file names are same length, some filenames are longer so to
+    # keep each field/length different, we need to loop over each sampleID
+
+    reported_sex = []
 
     # Filter from filenames
-    field = samplesID[0].count("_")  # count number of fields there are
-    sex_field_index = field - 1  # sex is always second last one in filename
-    ReportedSex = [sample.split("_")[sex_field_index] for sample in samplesID]
+    for sample in samplesID:
+        sex_char = sample.split('-')[-2]
+        # sometimes the sex last field is empty :(
+        # so replace blanks with N for None
+        if not sex_char:
+            sex_char = 'N'
+        reported_sex.append(sex_char)
+
+    # Need to include check that that the second last column in filename
+    # only has phenotypic sex: F/M/U/N
+    # If it has another character, such as FHC in FH assays, then change
+    # it to N (None)
+
+    # check that its not the other identifier in there - we can
+    # say value in list greater than one is not a phenotype sex identifier
+
+    print("Checking values")
+
+    for index, letter in enumerate(reported_sex):
+        if len(letter) != 1:
+            print("Length of phenotypic sex is not one. "
+                "Length of provided phenotypic sex is {}. "
+                 .format(len(letter)) + 
+                "Provided sex is: {}".format(letter))
+            reported_sex[index] = "N"
+
+    print("Finished checking")
+    print(reported_sex)
 
     # Ped uses number instead of F/M So replace letter with number.
-    # Sex code ('1' = male, '2' = female, '0' = unknown)
-    ReportedSex = [s.replace('M', '1') for s in ReportedSex]
-    ReportedSex = [s.replace('F', '2') for s in ReportedSex]
-    ReportedSex = [s.replace('U', '0') for s in ReportedSex]
-    print(ReportedSex)
-
-    # sampleID needs to match what is on the vcf so take sampleID only
-    samplesID = [sample.split("_")[0] for sample in samplesID]
+    # Sex code ('0' = unknown, '1' = male, '2' = female, '3' = none)
+    # Normally ped files do not have unknown 'None' but need this for
+    # cases where sample sex is not provided. '3' = None.
+    # relate2multiqc will reformat original_pedigree_sex to differentiate
+    # 0 = "unknown" and 3 = "none"
+    reported_sex = [s.replace('U', '0') for s in reported_sex]
+    reported_sex = [s.replace('M', '1') for s in reported_sex]
+    reported_sex = [s.replace('F', '2') for s in reported_sex]
+    reported_sex = [s.replace('N', '3') for s in reported_sex]
+    print(reported_sex)
 
     # Prepare each column of the ped file by creating lists
     FamilyID = samplesID
     PaternalID = [0] * len(samplesID)
     MaternalID = [0] * len(samplesID)
-    Sex = ReportedSex
+    Sex = reported_sex
     Phenotype = [-9] * len(samplesID)
 
     print("--------------Making PED FILE-----------")
@@ -96,7 +126,7 @@ def main():
 
     samplesID = get_sampleID(args)
 
-    df = known_sex(samplesID)
+    df = make_ped(samplesID)
 
     df.to_csv('Samples.ped', sep="\t", index=False, header=False)
 

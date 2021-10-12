@@ -14,11 +14,12 @@ main() {
     # Move all files in subdirectories of /in directory to the current project
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
 
-    # Download docker image from 001 folder#
+    # Download docker image from 001 folder
     dx download project-Fkb6Gkj433GVVvj73J7x8KbV:file-G1Gx2p8433Gg8Kf644jqxXJG -o somalier_v0_2_12.tar.gz
 
     # clean file_prefix input
-    file_prefix=$(echo $file_prefix | cut -d "_" -f2- )
+    # Removed the 002 or 003 part of the run folder
+    file_prefix=$(echo $file_prefix | sed s'/^00[23][-_]//' )
     echo "'${file_prefix}'"
 
     # Create ped file 
