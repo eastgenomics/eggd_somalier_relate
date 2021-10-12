@@ -60,7 +60,7 @@ def make_ped(samplesID):
     # Filter from filenames
     for sample in samplesID:
         sex_char = sample.split('-')[-2]
-        # sometimes the sex last field is empty :( 
+        # sometimes the sex last field is empty :(
         # so replace blanks with N for None
         if not sex_char:
             sex_char = 'N'
@@ -79,8 +79,8 @@ def make_ped(samplesID):
     for index, letter in enumerate(reported_sex):
         if len(letter) != 1:
             print(
-                f"Length of phenotypic sex is not one. Length of provided"
-                " phenotypic sex is {len(letter)} Provided sex is: {letter}"
+                "Length of phenotypic sex is not one. Length of provided"
+                f" phenotypic sex is {len(letter)} Provided sex is: {letter}"
                 )
             reported_sex[index] = "N"
 
@@ -90,8 +90,8 @@ def make_ped(samplesID):
     # Ped uses number instead of F/M So replace letter with number.
     # Sex code ('0' = unknown, '1' = male, '2' = female, '3' = none)
     # Normally ped files do not have unknown 'None' but need this for
-    # cases where sample sex is not provided. '3' = None. 
-    # relate2multiqc will reformat original_pedigree_sex to differentiate 
+    # cases where sample sex is not provided. '3' = None.
+    # relate2multiqc will reformat original_pedigree_sex to differentiate
     # 0 = "unknown" and 3 = "none"
     reported_sex = [s.replace('U', '0') for s in reported_sex]
     reported_sex = [s.replace('M', '1') for s in reported_sex]
