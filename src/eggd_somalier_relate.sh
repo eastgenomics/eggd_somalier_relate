@@ -19,7 +19,7 @@ main() {
 
     # clean file_prefix input
     # Removed the 002 or 003 part of the run folder
-    file_prefix=$(echo $file_prefix | cut -d "-" -f2- )
+    file_prefix=$(echo $file_prefix | sed s'/^00[23][-_]//' )
     echo "'${file_prefix}'"
 
     # Create ped file 
