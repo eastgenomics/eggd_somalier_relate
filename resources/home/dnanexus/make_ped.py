@@ -60,8 +60,7 @@ def make_ped(samplesID):
     # compile takes input a pattern that can be used to search
     # or match with other strings.
     # the pattern matches any character F,M,U,N expression in the first 
-    # dash followed by EGG (between numbers 0-9). The {1,2} is kept 
-    # there in case anything followes 
+    # dash followed by EGG (between numbers 0-9). 
     sex_pattern = re.compile("-[FMUN]?-EGG[0-9]")
 
     # Filter from filenames
