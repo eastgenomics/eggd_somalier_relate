@@ -1,5 +1,6 @@
 import pandas as pd
 import argparse
+import re
 
 def parse_args():
     """Allow arguments from the command line to be given.
@@ -56,14 +57,27 @@ def make_ped(samplesID):
     # keep each field/length different, we need to loop over each sampleID
 
     reported_sex = []
+    # compile takes input a pattern that can be used to search
+    # or match with other strings.
+    # the pattern matches any character F,M,U,N expression in the first
+    # dash followed by EGG (between numbers 0-9).
+    sex_pattern = re.compile("-[FMUN]?-EGG[0-9]")
 
     # Filter from filenames
     for sample in samplesID:
-        sex_char = sample.split('-')[-2]
-        # sometimes the sex last field is empty :(
-        # so replace blanks with N for None
-        if not sex_char:
-            sex_char = 'N'
+        match = re.search(sex_pattern, sample)
+        if match:
+            sex_char = match.group(0).split('EGG')[0]
+            if sex_char == "--":
+                # missing identifier, set to N
+                sex_char = "N"
+            else:
+                # real id, get middle character
+                sex_char = sex_char.strip('-')
+        else:
+            # no match => name bad or not expected to have one
+            sex_char = "N"
+
         reported_sex.append(sex_char)
 
     # Need to include check that that the second last column in filename
