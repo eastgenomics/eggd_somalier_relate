@@ -65,7 +65,7 @@ def make_ped(samplesID):
         if match:
             sex_char = match.group(0).split('EGG')[0]
             if sex_char == "--":
-                #missing identifier, set to N
+                # missing identifier, set to N
                 sex_char = "N"
             else:
                 # real id, get middle character
