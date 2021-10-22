@@ -57,7 +57,12 @@ def make_ped(samplesID):
     # keep each field/length different, we need to loop over each sampleID
 
     reported_sex = []
-    sex_pattern = re.compile("-[FMUN]?-EGG[0-9]{1,2}")
+    # compile takes input a pattern that can be used to search
+    # or match with other strings.
+    # the pattern matches any character F,M,U,N expression in the first 
+    # dash followed by EGG (between numbers 0-9). The {1,2} is kept 
+    # there in case anything followes 
+    sex_pattern = re.compile("-[FMUN]?-EGG[0-9]")
 
     # Filter from filenames
     for sample in samplesID:
