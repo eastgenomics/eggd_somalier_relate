@@ -1,8 +1,7 @@
 {
   "name": "eggd_somalier_relate_v1.0.3",
   "title": "eggd_somalier_relate_v1.0.3",
-  "summary": "Checks relatedness and sex of sample",
-  "dxapi": "1.0.3", 
+  "summary": "Checks relatedness and sex of sample", 
   "properties": {
     "githubRelease": "v1.0.3"
   },
