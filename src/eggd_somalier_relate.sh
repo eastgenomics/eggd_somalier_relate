@@ -15,7 +15,7 @@ main() {
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
 
     # Download docker image from 001 folder
-    dx download project-Fkb6Gkj433GVVvj73J7x8KbV:file-G1Gx2p8433Gg8Kf644jqxXJG -o somalier_v0_2_12.tar.gz
+    dx download project-Fkb6Gkj433GVVvj73J7x8KbV:file-G9Y6xB0433Gv9q9Y2G7v8162 -o somalier_v0_2_15.tar.gz
 
     # clean file_prefix input
     # Removed the 002 or 003 part of the run folder
