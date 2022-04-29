@@ -29,14 +29,14 @@ main() {
     # Run relate somalier
     echo "--------------Run Somalier docker -----------------"
     service docker start
-    docker load -i somalier_v0_2_12.tar.gz
+    docker load -i somalier_v0_2_15.tar.gz
 
     if [[ ! -z ${file_prefix} ]]; then
         echo "Prefix " "${file_prefix}" " will be used for output files"
-        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate -o ${file_prefix}.somalier --ped /data/Samples.ped /data/*.somalier"
+        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.15 /bin/bash -c "cd /data ; somalier relate -o ${file_prefix}.somalier --ped /data/Samples.ped /data/*.somalier"
     else
         echo "No prefix provided for output files - default somalier will be used"
-        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.12 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
+        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.15 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
     fi
 
     chmod 777 *
