@@ -1,7 +1,7 @@
 # eggd_somalier_relate
 
 ## What does this app do?
-This app runs Somalier (v0.2.12) to predict sex of samples. This app measures relatedness of samples and contains other QC metrics such as depth, het and hom of X chromosomes which enables us to predict sex of samples.
+This app runs Somalier (v0.2.15) to predict sex of samples. This app measures relatedness of samples and contains other QC metrics such as depth, het and hom of X chromosomes which enables us to predict sex of samples.
 
 This app is based on https://github.com/brentp/somalier
 
@@ -27,6 +27,6 @@ As the predicted sex of samples are not appended to this file, egg_somalier_rela
 
 ## How does this app calculate sex of sample?
 
-The {samples}.somalier file is a binary file with selected sites from vcf. The sites on the X and Y chromosome are specific to each chromosome and not in PARs. The heterozygous(het) calls on the X chromosome are used to predict whether a sample is female or male as females have more het calls due to have two X chromsomes. Males typically have 0 or 1 het calls whereas female have a wider range, the threshold for this depends on the assay samples were run on.
+The {samples}.somalier file is a binary file with selected sites from vcf. The sites on the X and Y chromosome are specific to each chromosome and not in PARs. The heterozygous(het) calls on the X chromosome are used to predict whether a sample is female or male as females have more het calls due to have two X chromosomes. Males typically have 0 or 1 het calls whereas female have a wider range, the threshold for this depends on the assay samples were run on.
 
 ### This app was made by EMEE GLH
