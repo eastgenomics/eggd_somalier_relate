@@ -2,9 +2,8 @@
   "name": "eggd_somalier_relate_v1.0.4",
   "title": "eggd_somalier_relate_v1.0.4",
   "summary": "Checks relatedness and sex of sample",
-  "properties": {
-    "githubRelease": "v1.0.4"
-  },
+  "dxapi": "1.0.0",
+  "version": "1.1.0",
   "inputSpec": [
     {
       "name": "somalier_extract_file",
@@ -76,11 +75,17 @@
       }
     },
     "interpreter": "bash",
-    "release": "16.04",
+    "release": "20.04",
     "distribution": "Ubuntu",
     "file": "src/eggd_somalier_relate.sh",
-    "version": "1"
+    "version": "0"
   },
+  "developers":[
+    "org-emee_1"
+  ],
+  "authorizedUsers": [
+    "org-emee_1"
+  ],
   "access": {
     "project": "CONTRIBUTE",
     "allProjects": "VIEW"
