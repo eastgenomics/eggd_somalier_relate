@@ -22,10 +22,10 @@ main() {
     file_prefix=$(echo $file_prefix | sed s'/^00[23][-_]//' )
     echo "'${file_prefix}'"
 
-    # Create ped file 
+    # Create ped file
     echo "--------------Creating ped file-------------------"
     python3 make_ped.py -a *.somalier
-      
+
     # Run relate somalier
     echo "--------------Run Somalier docker -----------------"
     service docker start
@@ -51,7 +51,7 @@ main() {
     mv *somalier.pairs.tsv /home/dnanexus/out/pairs_tsv/
     mv *somalier.samples.tsv /home/dnanexus/out/samples_tsv/
     mv Samples.ped /home/dnanexus/out/ped_output
-    
+
     # If a single somalier file is inputted, groups.tsv file is not generated
     if [ -f *somalier.groups.tsv ]; then
         echo "somalier.groups.tsv exists."
