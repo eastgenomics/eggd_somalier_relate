@@ -61,19 +61,14 @@ def make_ped(samplesID):
     # or match with other strings.
     # the pattern matches any character F,M,U,N expression in the sample
 
-    sex_pattern = re.compile("-[FMUN]?-")
+    sex_pattern = re.compile("-[FMUN]-")
 
     # Filter from filenames
     for sample in samplesID:
         match = re.search(sex_pattern, sample)
         if match:
             sex_char = match.group(0)
-            if sex_char == "--":
-                # missing identifier, set to N
-                sex_char = "N"
-            else:
-                # real id, get middle character
-                sex_char = sex_char.strip('-')
+            sex_char = sex_char.strip('-')
         else:
             # no match => name bad or not expected to have one
             sex_char = "N"
