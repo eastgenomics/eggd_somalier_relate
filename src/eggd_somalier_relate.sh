@@ -5,9 +5,8 @@ set -exo pipefail
 main() {
 
     # Install packages
-    pip install packages/numpy-1.18.5-cp35-cp35m-manylinux1_x86_64.whl
-    pip install packages/pytz-2021.1-py2.py3-none-any.whl
-    pip install packages/pandas-0.24.2-cp35-cp35m-manylinux1_x86_64.whl
+    export PATH=$PATH:/home/dnanexus/.local/bin  # pip installs some packages here, add to path
+    sudo -H python3 -m pip install --no-index --no-deps packages/*
 
     # Load data
     dx-download-all-inputs
