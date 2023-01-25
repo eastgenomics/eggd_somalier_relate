@@ -59,21 +59,16 @@ def make_ped(samplesID):
     reported_sex = []
     # compile takes input a pattern that can be used to search
     # or match with other strings.
-    # the pattern matches any character F,M,U,N expression in the first
-    # dash followed by EGG (between numbers 0-9).
-    sex_pattern = re.compile("-[FMUN]?-EGG[0-9]")
+    # the pattern matches any character F,M,U,N expression in the sample
+
+    sex_pattern = re.compile("-[FMUN]-")
 
     # Filter from filenames
     for sample in samplesID:
         match = re.search(sex_pattern, sample)
         if match:
-            sex_char = match.group(0).split('EGG')[0]
-            if sex_char == "--":
-                # missing identifier, set to N
-                sex_char = "N"
-            else:
-                # real id, get middle character
-                sex_char = sex_char.strip('-')
+            sex_char = match.group(0)
+            sex_char = sex_char.strip('-')
         else:
             # no match => name bad or not expected to have one
             sex_char = "N"
@@ -94,7 +89,7 @@ def make_ped(samplesID):
         if len(letter) != 1:
             print("Length of phenotypic sex is not one. "
                 "Length of provided phenotypic sex is {}. "
-                 .format(len(letter)) + 
+                 .format(len(letter)) +
                 "Provided sex is: {}".format(letter))
             reported_sex[index] = "N"
 

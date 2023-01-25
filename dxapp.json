@@ -1,10 +1,9 @@
 {
-  "name": "eggd_somalier_relate_v1.0.4",
-  "title": "eggd_somalier_relate_v1.0.4",
+  "name": "eggd_somalier_relate",
+  "title": "eggd_somalier_relate",
   "summary": "Checks relatedness and sex of sample",
-  "properties": {
-    "githubRelease": "v1.0.4"
-  },
+  "dxapi": "1.0.0",
+  "version": "1.1.0",
   "inputSpec": [
     {
       "name": "somalier_extract_file",
@@ -24,6 +23,16 @@
         "*.txt"
       ],
       "help": "String file with current path directory to be the output files prefix"
+    },
+    {
+      "name": "somalier_docker",
+      "label": "Somalier Docker image",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.tar.gz"
+      ],
+      "help": "Somalier docker image"
     }
   ],
   "outputSpec": [
@@ -76,11 +85,17 @@
       }
     },
     "interpreter": "bash",
-    "release": "16.04",
+    "release": "20.04",
     "distribution": "Ubuntu",
     "file": "src/eggd_somalier_relate.sh",
-    "version": "1"
+    "version": "0"
   },
+  "developers":[
+    "org-emee_1"
+  ],
+  "authorizedUsers": [
+    "org-emee_1"
+  ],
   "access": {
     "project": "CONTRIBUTE",
     "allProjects": "VIEW"
