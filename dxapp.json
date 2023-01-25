@@ -23,6 +23,16 @@
         "*.txt"
       ],
       "help": "String file with current path directory to be the output files prefix"
+    },
+    {
+      "name": "somalier_docker",
+      "label": "Somalier Docker image",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.tar.gz"
+      ],
+      "help": "Somalier docker image"
     }
   ],
   "outputSpec": [

@@ -14,7 +14,7 @@ main() {
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ./
 
     # Download docker image from 001 folder
-    dx download project-Fkb6Gkj433GVVvj73J7x8KbV:file-G9Y6xB0433Gv9q9Y2G7v8162 -o somalier_v0_2_15.tar.gz
+    dx download "$somalier_docker" -o somalier.tar.gz
 
     # clean file_prefix input
     # Removed the 002 or 003 part of the run folder
@@ -28,7 +28,7 @@ main() {
     # Run relate somalier
     echo "--------------Run Somalier docker -----------------"
     service docker start
-    docker load -i somalier_v0_2_15.tar.gz
+    docker load -i somalier.tar.gz
 
     if [[ ! -z ${file_prefix} ]]; then
         echo "Prefix " "${file_prefix}" " will be used for output files"
