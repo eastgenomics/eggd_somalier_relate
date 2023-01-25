@@ -1,7 +1,7 @@
 # eggd_somalier_relate
 
 ## What does this app do?
-This app runs Somalier (v0.2.15) to predict sex of samples. This app measures relatedness of samples and contains other QC metrics such as depth, het and hom of X chromosomes which enables us to predict sex of samples.
+This app runs Somalier to predict sex of samples. This app measures relatedness of samples and contains other QC metrics such as depth, het and hom of X chromosomes which enables us to predict sex of samples.
 
 This app is based on https://github.com/brentp/somalier
 
@@ -9,6 +9,7 @@ This app is based on https://github.com/brentp/somalier
 
 ## What are the inputs?
 * Array of {sample}.somalier files. These are the output files from somalier extract.
+* Somalier docker image
 * A string for project folder which will be the output file prefixes, default is somalier prefix (Optional).
 
 ## What are the outputs?
@@ -18,12 +19,12 @@ This app is based on https://github.com/brentp/somalier
 * Somalier.html - interactive visualization of results.
 
 * Somalier.pairs.tsv - the relatedness metrics between pairs of samples.
-  
+
 * Somalier.groups.tsv - samples grouped together based on relatedness.
 
 ## Where is this app applicable?
 This app can be used after sites required are extracted, usually after running somalier_extract. This app can be used in a multi sample workflow as the app can take multiple inputs in.
-As the predicted sex of samples are not appended to this file, egg_somalier_relate2multiqc is run to 
+As the predicted sex of samples are not appended to this file, egg_somalier_relate2multiqc is run to
 
 ## How does this app calculate sex of sample?
 
