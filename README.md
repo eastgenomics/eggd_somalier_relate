@@ -5,7 +5,7 @@ This app runs Somalier to predict sex of samples. This app measures relatedness 
 
 This app is based on https://github.com/brentp/somalier
 
-![Image of workflow](somalier_relate_workflow.jpg)
+![Image of workflow](images/somalier_v1.1.0_io.jpeg)
 
 ## What are the inputs?
 * Array of {sample}.somalier files. These are the output files from somalier extract.
