@@ -30,12 +30,15 @@ main() {
     service docker start
     docker load -i somalier.tar.gz
 
+    # Get image id from docker image loaded
+    SOM_IMAGE_ID=$(sudo docker images --format="{{.Repository}} {{.ID}}" | grep "^brentp" | cut -d' ' -f2)
+
     if [[ ! -z ${file_prefix} ]]; then
         echo "Prefix " "${file_prefix}" " will be used for output files"
-        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.15 /bin/bash -c "cd /data ; somalier relate -o ${file_prefix}.somalier --ped /data/Samples.ped /data/*.somalier"
+        docker run  -v /home/dnanexus/:/data ${SOM_IMAGE_ID} /bin/bash -c "cd /data ; somalier relate -o ${file_prefix}.somalier --ped /data/Samples.ped /data/*.somalier"
     else
         echo "No prefix provided for output files - default somalier will be used"
-        docker run  -v /home/dnanexus/:/data brentp/somalier:v0.2.15 /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
+        docker run  -v /home/dnanexus/:/data ${SOM_IMAGE_ID} /bin/bash -c "cd /data ; somalier relate --ped /data/Samples.ped /data/*.somalier"
     fi
 
     chmod 777 *
